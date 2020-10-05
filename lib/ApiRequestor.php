@@ -341,6 +341,16 @@ class ApiRequestor
 
             throw new Exception\AuthenticationException($msg);
         }
+        
+        // Requires basic $apiKey validation since it goes directly to Authorization header.
+        if (!preg_match('/^[A-Za-z0-9_-]+$/', $myApiKey)) {
+          $msg = 'Invalid API key provided. Make sure it does not contain '
+              . 'any spaces or line-breaks. You can generate API keys from '
+              . 'the Stripe web interface.  See https://stripe.com/api for '
+              . 'details, or email support@stripe.com if you have any questions. ';
+
+            throw new Exception\AuthenticationException($msg);
+        }
 
         // Clients can supply arbitrary additional keys to be included in the
         // X-Stripe-Client-User-Agent header via the optional getUserAgentInfo()
